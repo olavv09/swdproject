@@ -67,7 +67,7 @@ class Form extends React.Component {
             htmlFor="priceWS"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Włochy-Szwajcaria
+            Szwajcaria-Włochy
           </label>
           <input
             id="priceWS"
@@ -84,7 +84,7 @@ class Form extends React.Component {
             htmlFor="priceSH"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Szwajcaria-Hiszpania
+            Hiszpania-Szwajcaria
           </label>
           <input
             id="priceSH"
@@ -101,7 +101,7 @@ class Form extends React.Component {
             htmlFor="priceWH"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Włochy-Hiszpania
+            Hiszpania-Włochy
           </label>
           <input
             id="priceWH"
@@ -123,7 +123,7 @@ class Form extends React.Component {
             htmlFor="attractionsWS"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Włochy-Szwajcaria
+            Szwajcaria-Włochy
           </label>
           <input
             id="attractionsWS"
@@ -140,7 +140,7 @@ class Form extends React.Component {
             htmlFor="attractionsSH"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Szwajcaria-Hiszpania
+            Hiszpania-Szwajcaria
           </label>
           <input
             id="attractionsSH"
@@ -157,7 +157,7 @@ class Form extends React.Component {
             htmlFor="attractionsWH"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Włochy-Hiszpania
+            Hiszpania-Włochy
           </label>
           <input
             id="attractionsWH"
@@ -179,7 +179,7 @@ class Form extends React.Component {
             htmlFor="weatherWS"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Włochy-Szwajcaria
+            Szwajcaria-Włochy
           </label>
           <input
             id="weatherWS"
@@ -196,7 +196,7 @@ class Form extends React.Component {
             htmlFor="weatherSH"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Szwajcaria-Hiszpania
+            Hiszpania-Szwajcaria
           </label>
           <input
             id="weatherSH"
@@ -213,7 +213,7 @@ class Form extends React.Component {
             htmlFor="weatherWH"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Włochy-Hiszpania
+            Hiszpania-Włochy
           </label>
           <input
             id="weatherWH"
