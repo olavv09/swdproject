@@ -1,14 +1,23 @@
 const express = require('express')
+const cors = require('cors')
+const processMatrices = require('./ahp')
 const app = express()
 const port = 4000
 
+app.use(cors())
+app.use(express.json());
+
+app.all("*", (req, res, next) => {
+  console.log(`${req.method}: ${req.url}`)
+  next()
+})
+
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.status(200).send();
 })
 
 app.post('/ahp', (req, res) => {
-  console.log("dupa");
-  res.sendStatus(200);
+  processMatrices(req, res)
 })
 
 
