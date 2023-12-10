@@ -1,29 +1,33 @@
 import React from "react";
 import "./App.css";
 import axios from "axios";
+import { withRouter } from "react-router-dom";
+
 
 class Form extends React.Component {
+  
   constructor(props) {
     super(props);
     this.state = {
-      priceWS: "8",
-      priceSH: "8",
-      priceWH: "8",
-      attractionsWS: "8",
-      attractionsSH: "8",
-      attractionsWH: "8",
-      weatherWS: "8",
-      weatherSH: "8",
-      weatherWH: "8",
+      priceWS: '8',
+      priceSH: '8',
+      priceWH: '8',
+      attractionsWS: '8',
+      attractionsSH: '8',
+      attractionsWH: '8',
+      weatherWS: '8',
+      weatherSH: '8',
+      weatherWH: '8',
     };
 
+    this.navigate = this.props.navigate; // Przekazuje navigate jako props z rodzica
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
     const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
@@ -31,10 +35,10 @@ class Form extends React.Component {
     });
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post("http://127.0.0.1:4000/ahp", {
+      .post('http://127.0.0.1:4000/ahp', {
         priceWS: this.state.priceWS,
         priceSH: this.state.priceSH,
         priceWH: this.state.priceWH,
@@ -45,20 +49,23 @@ class Form extends React.Component {
         weatherSH: this.state.weatherSH,
         weatherWH: this.state.weatherWH,
       })
-      .then(function (response) {
-        return JSON.parse(response.data);
+      .then((response) => {
+        const results = JSON.parse(response.data);
+        console.log(results);
+  
+        // Przekierowanie po kliknięciu "Ok"
+        this.props.history.push("/results");
       })
-      .then(function (json) {
-        console.log(json);
-      })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
-  }
+  };
+  
 
   render() {
     return (
-      <form className="flex flex-col space-y-10" onSubmit={this.handleSubmit}>
+      <div className="container">
+      <form className="flex flex-col p-5 space-y-10" onSubmit={this.handleSubmit}>
         <div>
           <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             Cena
@@ -229,10 +236,12 @@ class Form extends React.Component {
         <button
             type="submit"
             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          
           >
             Ok
           </button>
       </form>
+      </div>
     );
   }
 }
