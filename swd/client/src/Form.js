@@ -79,7 +79,6 @@ class Form extends React.Component {
             <h1 className="flex w-full justify-center rounded-md px-3 py-1.5 text-xl leading-6 text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >Ankieta</h1>
             <AiOutlineDollar />
-
             <span className="flex w-full justify-centerblock mb-2 text-sm font-medium text-gray-900 dark:text-black">
               Cena
             </span>
@@ -87,7 +86,7 @@ class Form extends React.Component {
               htmlFor="priceWS"
               className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
             >
-              Włochy - Szwajcaria
+              Szwajcaria - Włochy
             </label>
             <input
               id="priceWS"
@@ -103,7 +102,7 @@ class Form extends React.Component {
               htmlFor="priceSH"
               className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
             >
-              Szwajcaria - Hiszpania
+              Hiszpania - Szwajcaria
             </label>
             <input
               id="priceSH"
@@ -119,7 +118,7 @@ class Form extends React.Component {
               htmlFor="priceWH"
               className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
             >
-              Włochy - Hiszpania
+              Hiszpania - Włochy
             </label>
             <input
               id="priceWH"
@@ -132,7 +131,6 @@ class Form extends React.Component {
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
             />
           </div>
-
           <div>
             <LuPalmtree />
             <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
@@ -142,7 +140,7 @@ class Form extends React.Component {
               htmlFor="attractionsWS"
               className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
             >
-              Włochy - Szwajcaria
+              Szwajcaria - Włochy
             </label>
             <input
               id="attractionsWS"
@@ -154,12 +152,11 @@ class Form extends React.Component {
               onChange={this.handleChange}
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
             />
-
             <label
               htmlFor="attractionsSH"
               className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
             >
-              Szwajcaria - Hiszpania
+              Hiszpania - Szwajcaria
             </label>
             <input
               id="attractionsSH"
@@ -171,12 +168,11 @@ class Form extends React.Component {
               onChange={this.handleChange}
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
             />
-
             <label
               htmlFor="attractionsWH"
               className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
             >
-              Włochy - Hiszpania
+              Hiszpania - Włochy
             </label>
             <input
               id="attractionsWH"
@@ -189,7 +185,6 @@ class Form extends React.Component {
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
             />
           </div>
-
           <div>
             <TiWeatherCloudy />
             <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
@@ -199,7 +194,7 @@ class Form extends React.Component {
               htmlFor="weatherWS"
               className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
             >
-              Włochy - Szwajcaria
+              Szwajcaria - Włochy
             </label>
             <input
               id="weatherWS"
@@ -211,12 +206,11 @@ class Form extends React.Component {
               onChange={this.handleChange}
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
             />
-
             <label
               htmlFor="weatherSH"
               className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
             >
-              Szwajcaria - Hiszpania
+              Hiszpania - Szwajcaria
             </label>
             <input
               id="weatherSH"
@@ -228,12 +222,11 @@ class Form extends React.Component {
               onChange={this.handleChange}
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
             />
-
             <label
               htmlFor="weatherWH"
               className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
             >
-              Włochy - Hiszpania
+              Hiszpania - Włochy
             </label>
             <input
               id="weatherWH"
@@ -253,7 +246,6 @@ class Form extends React.Component {
             Wyślij
             <BiSolidSend className="ml-1" />
           </button>
-
           <Link to="/results">
             <button
               type="submit"
@@ -261,7 +253,6 @@ class Form extends React.Component {
             >
               Sprawdź wyniki!
               <FaChartSimple className="ml-1" />
-
             </button>
           </Link>
         </form>
