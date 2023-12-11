@@ -42,4 +42,13 @@
   margin: 0 auto; /* Center the container horizontally */
 }
 
+h1 {
+  font-size: 100px;
+  font-family: "Helvetica Neue", sans-serif;
+  font-weight: bold;
+  color: #333; /* Kolor tekstu */
+}
+
+
+
 /* ... (your existing styles) */

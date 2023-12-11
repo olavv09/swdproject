@@ -1,11 +1,18 @@
 import React from "react";
 import "./App.css";
 import axios from "axios";
-import { withRouter } from "react-router-dom";
-
+import { Link } from "react-router-dom";
+import { TiWeatherCloudy } from "react-icons/ti";
+import { AiOutlineDollar } from "react-icons/ai";
+import { LuPalmtree } from "react-icons/lu";
+import { FaChartSimple } from "react-icons/fa6";
+import { BiSolidSend } from "react-icons/bi";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Footer from "./Footer"; // Importuj komponent stopki
 
 class Form extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -52,195 +59,213 @@ class Form extends React.Component {
       .then((response) => {
         const results = JSON.parse(response.data);
         console.log(results);
-  
-        // Przekierowanie po kliknięciu "Ok"
-        this.props.history.push("/results");
+        localStorage.setItem('results', JSON.stringify(results));
+        toast.success("Wyniki zostały pomyślnie wysłane!", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+        });
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  
 
   render() {
     return (
       <div className="container">
-      <form className="flex flex-col p-5 space-y-10" onSubmit={this.handleSubmit}>
-        <div>
-          <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Cena
-          </span>
-          <label
-            htmlFor="priceWS"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Włochy-Szwajcaria
-          </label>
-          <input
-            id="priceWS"
-            name="priceWS"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
+        <ToastContainer />
+        <form className="flex flex-col space-y-5" onSubmit={this.handleSubmit}>
+          <div>
+            <h1 className="flex w-full justify-center rounded-md px-3 py-1.5 text-xl leading-6 text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >Ankieta</h1>
+            <AiOutlineDollar />
 
-          <label
-            htmlFor="priceSH"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Szwajcaria-Hiszpania
-          </label>
-          <input
-            id="priceSH"
-            name="priceSH"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
+            <span className="flex w-full justify-centerblock mb-2 text-sm font-medium text-gray-900 dark:text-black">
+              Cena
+            </span>
+            <label
+              htmlFor="priceWS"
+              className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+            >
+              Włochy - Szwajcaria
+            </label>
+            <input
+              id="priceWS"
+              name="priceWS"
+              type="range"
+              min="0"
+              max="16"
+              defaultValue="8"
+              onChange={this.handleChange}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
+            <label
+              htmlFor="priceSH"
+              className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+            >
+              Szwajcaria - Hiszpania
+            </label>
+            <input
+              id="priceSH"
+              name="priceSH"
+              type="range"
+              min="0"
+              max="16"
+              defaultValue="8"
+              onChange={this.handleChange}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
+            <label
+              htmlFor="priceWH"
+              className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+            >
+              Włochy - Hiszpania
+            </label>
+            <input
+              id="priceWH"
+              name="priceWH"
+              type="range"
+              min="0"
+              max="16"
+              defaultValue="8"
+              onChange={this.handleChange}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
+          </div>
 
-          <label
-            htmlFor="priceWH"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Włochy-Hiszpania
-          </label>
-          <input
-            id="priceWH"
-            name="priceWH"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-        </div>
+          <div>
+            <LuPalmtree />
+            <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
+              Atrakcje
+            </span>
+            <label
+              htmlFor="attractionsWS"
+              className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+            >
+              Włochy - Szwajcaria
+            </label>
+            <input
+              id="attractionsWS"
+              name="attractionsWS"
+              type="range"
+              min="0"
+              max="16"
+              defaultValue="8"
+              onChange={this.handleChange}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
 
-        <div>
-          <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Atrakcje
-          </span>
-          <label
-            htmlFor="attractionsWS"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Włochy-Szwajcaria
-          </label>
-          <input
-            id="attractionsWS"
-            name="attractionsWS"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
+            <label
+              htmlFor="attractionsSH"
+              className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+            >
+              Szwajcaria - Hiszpania
+            </label>
+            <input
+              id="attractionsSH"
+              name="attractionsSH"
+              type="range"
+              min="0"
+              max="16"
+              defaultValue="8"
+              onChange={this.handleChange}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
 
-          <label
-            htmlFor="attractionsSH"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Szwajcaria-Hiszpania
-          </label>
-          <input
-            id="attractionsSH"
-            name="attractionsSH"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
+            <label
+              htmlFor="attractionsWH"
+              className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+            >
+              Włochy - Hiszpania
+            </label>
+            <input
+              id="attractionsWH"
+              name="attractionsWH"
+              type="range"
+              min="0"
+              max="16"
+              defaultValue="8"
+              onChange={this.handleChange}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
+          </div>
 
-          <label
-            htmlFor="attractionsWH"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Włochy-Hiszpania
-          </label>
-          <input
-            id="attractionsWH"
-            name="attractionsWH"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-        </div>
+          <div>
+            <TiWeatherCloudy />
+            <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
+              Pogoda
+            </span>
+            <label
+              htmlFor="weatherWS"
+              className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+            >
+              Włochy - Szwajcaria
+            </label>
+            <input
+              id="weatherWS"
+              name="weatherWS"
+              type="range"
+              min="0"
+              max="16"
+              defaultValue="8"
+              onChange={this.handleChange}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
 
-        <div>
-          <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Pogoda
-          </span>
-          <label
-            htmlFor="weatherWS"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Włochy-Szwajcaria
-          </label>
-          <input
-            id="weatherWS"
-            name="weatherWS"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
+            <label
+              htmlFor="weatherSH"
+              className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+            >
+              Szwajcaria - Hiszpania
+            </label>
+            <input
+              id="weatherSH"
+              name="weatherSH"
+              type="range"
+              min="0"
+              max="16"
+              defaultValue="8"
+              onChange={this.handleChange}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
 
-          <label
-            htmlFor="weatherSH"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Szwajcaria-Hiszpania
-          </label>
-          <input
-            id="weatherSH"
-            name="weatherSH"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-
-          <label
-            htmlFor="weatherWH"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Włochy-Hiszpania
-          </label>
-          <input
-            id="weatherWH"
-            name="weatherWH"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-        </div>
-        <button
+            <label
+              htmlFor="weatherWH"
+              className="flex w-full justify-center block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+            >
+              Włochy - Hiszpania
+            </label>
+            <input
+              id="weatherWH"
+              name="weatherWH"
+              type="range"
+              min="0"
+              max="16"
+              defaultValue="8"
+              onChange={this.handleChange}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
+          </div>
+          <button
             type="submit"
-            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          
+            className="flex w-full justify-center items-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
           >
-            Ok
+            Wyślij
+            <BiSolidSend className="ml-1" />
           </button>
-      </form>
+
+          <Link to="/results">
+            <button
+              type="submit"
+              className="flex w-full justify-center items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Sprawdź wyniki!
+              <FaChartSimple className="ml-1" />
+
+            </button>
+          </Link>
+        </form>
+        <Footer />
       </div>
     );
   }
