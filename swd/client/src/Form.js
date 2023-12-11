@@ -1,3 +1,4 @@
+//Form.js
 import React from "react";
 import "./App.css";
 import axios from "axios";
@@ -10,9 +11,12 @@ import { BiSolidSend } from "react-icons/bi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from "./Footer"; // Importuj komponent stopki
+import SurveyForm from "./SurveyForm";
+import SurveySelector from "./SurveySelector";
 
 class Form extends React.Component {
 
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -25,6 +29,7 @@ class Form extends React.Component {
       weatherWS: '8',
       weatherSH: '8',
       weatherWH: '8',
+      availableSurveys: [], // Lista dostępnych ankiet
     };
 
     this.navigate = this.props.navigate; // Przekazuje navigate jako props z rodzica
@@ -40,6 +45,14 @@ class Form extends React.Component {
     this.setState({
       [name]: value,
     });
+  }
+
+  handleSurveySave(surveyName) {
+    // Tutaj możesz dodać kod do zapisywania nowej ankiety w bazie danych lub innym miejscu
+    // Następnie zaktualizuj availableSurveys
+    this.setState((prevState) => ({
+      availableSurveys: [...prevState.availableSurveys, surveyName],
+    }));
   }
 
   handleSubmit = (event) => {
@@ -76,6 +89,10 @@ class Form extends React.Component {
         <ToastContainer />
         <form className="flex flex-col space-y-5" onSubmit={this.handleSubmit}>
           <div>
+          <SurveySelector
+            surveys={this.state.availableSurveys}
+            onSelect={this.handleSurveySelect}
+          />
             <h1 className="flex w-full justify-center rounded-md px-3 py-1.5 text-xl leading-6 text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >Ankieta</h1>
             <AiOutlineDollar />
@@ -256,6 +273,7 @@ class Form extends React.Component {
             </button>
           </Link>
         </form>
+        
         <Footer />
       </div>
     );

@@ -6,10 +6,11 @@ import './index.css';
 import Home from './Home';
 import Results from './Results';
 import reportWebVitals from './reportWebVitals';
+import CreateSurvey from './CreateSurvey';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const navigate = () => {}; // Utwórz funkcję navigate
+const navigate = () => { }; // Utwórz funkcję navigate
 
 root.render(
   <React.StrictMode>
@@ -27,6 +28,7 @@ root.render(
           path="/results"
           element={<Results />}
         />
+        <Route path="/create-survey" element={<CreateSurvey />} /> {/* Nowa ścieżka */}
       </Routes>
     </Router>
   </React.StrictMode>,

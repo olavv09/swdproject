@@ -34,10 +34,10 @@ function createMatrix(priceWS, priceWH, priceSH) {
   matrix[2][0] = 1 / convertPrice(priceWH);
   matrix[2][1] = 1 / convertPrice(priceSH);
 
-  return normalizeMatrix(matrix);
+  return consistentMatrix(matrix);
 }
 
-function normalizeMatrix(matrix) {
+function consistentMatrix(matrix) {
   let average0 = (matrix[0][0] + matrix[1][0] + matrix[2][0]);
   let average1 = (matrix[0][1] + matrix[1][1] + matrix[2][1]);
   let average2 = (matrix[0][2] + matrix[1][2] + matrix[2][2]);

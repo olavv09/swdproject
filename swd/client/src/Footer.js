@@ -1,4 +1,3 @@
-// Footer.js
 import React from "react";
 
 const Footer = () => {
@@ -10,3 +9,8 @@ const Footer = () => {
 };
 
 export default Footer;
+
+// kreator
+// wspolczynnik konswekwentnosci - wyliczyc i odniesc sie(CR)
+// podniesc wspolczynnik konswekwentnosci
+// 
