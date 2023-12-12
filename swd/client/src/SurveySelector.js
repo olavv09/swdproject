@@ -1,19 +1,32 @@
-// SurveySelector.js
 import React, { useState, useEffect } from "react";
 
-export const SurveySelector = ({ onSelect }) => {
+const SurveySelector = ({ onSelect }) => {
   const [selectedSurvey, setSelectedSurvey] = useState("");
   const [localSurveys, setLocalSurveys] = useState([]);
 
   useEffect(() => {
-    // Load surveys from local storage on component mount
-    const storedSurveys = JSON.parse(localStorage.getItem("savedSurveys")) || [];
-    setLocalSurveys(storedSurveys);
+    // Load surveys from surveys.json on component mount
+    const fetchData = async () => {
+      try {
+        const response = await fetch(process.env.PUBLIC_URL + "/surveys.json");
+        const surveyData = await response.json();
+        setLocalSurveys(surveyData);
+      } catch (error) {
+        console.error("Error fetching surveys:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handleChange = (e) => {
-    setSelectedSurvey(e.target.value);
-    onSelect(e.target.value);
+    const selectedSurvey = e.target.value;
+    setSelectedSurvey(selectedSurvey);
+
+    // Call onSelect function if it's a function
+    if (typeof onSelect === "function") {
+      onSelect(selectedSurvey);
+    }
   };
 
   return (

@@ -13,6 +13,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import Footer from "./Footer"; // Importuj komponent stopki
 import SurveyForm from "./SurveyForm";
 import SurveySelector from "./SurveySelector";
+import { IoMdAddCircle } from "react-icons/io";
+
+const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
 
 class Form extends React.Component {
 
@@ -270,6 +273,15 @@ class Form extends React.Component {
             >
               Sprawdź wyniki!
               <FaChartSimple className="ml-1" />
+            </button>
+          </Link>
+          <Link to="/create-survey">
+            <button
+              type="submit"
+              className="flex w-full justify-center items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Dodaj nową ankietę
+              <IoMdAddCircle className="ml-1" />
             </button>
           </Link>
         </form>
