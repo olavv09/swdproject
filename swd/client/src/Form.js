@@ -1,33 +1,56 @@
+//Form.js
 import React from "react";
 import "./App.css";
 import axios from "axios";
-import { withRouter } from "react-router-dom";
-
+import { Link } from "react-router-dom";
+import { FaChartSimple } from "react-icons/fa6";
+import { BiSolidSend } from "react-icons/bi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Footer from "./Footer"; // Importuj komponent stopki
+import FormElement from "./FormElement"
+import SurveySelector from "./SurveySelector";
+import { IoMdAddCircle } from "react-icons/io";
 
 class Form extends React.Component {
-  
   constructor(props) {
     super(props);
     this.state = {
-      priceWS: '8',
-      priceSH: '8',
-      priceWH: '8',
-      attractionsWS: '8',
-      attractionsSH: '8',
-      attractionsWH: '8',
-      weatherWS: '8',
-      weatherSH: '8',
-      weatherWH: '8',
+      criteria1AB: "",
+      criteria1BC: "",
+      criteria1AC: "",
+      criteria2AB: "",
+      criteria2BC: "",
+      criteria2AC: "",
+      criteria3AB: "",
+      criteria3BC: "",
+      criteria3AC: "",
+      availableSurveys: [], // Lista dostępnych ankiet
+      selectedSurvey: "",
+      navigate: props.navigate
     };
 
-    this.navigate = this.props.navigate; // Przekazuje navigate jako props z rodzica
+    const fetchData = async () => {
+      try {
+        const response = await fetch(process.env.PUBLIC_URL + "/surveys.json");
+        const surveyData = await response.json();
+        this.state.availableSurveys = surveyData;
+      } catch (error) {
+        console.error("Error fetching surveys:", error);
+      }
+    };
+
+    fetchData();
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSurveySave = this.handleSurveySave.bind(this);
+    this.handleSurveySelect = this.handleSurveySelect.bind(this);
   }
 
   handleChange(event) {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
@@ -38,209 +61,122 @@ class Form extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post('http://127.0.0.1:4000/ahp', {
-        priceWS: this.state.priceWS,
-        priceSH: this.state.priceSH,
-        priceWH: this.state.priceWH,
-        attractionsWS: this.state.attractionsWS,
-        attractionsSH: this.state.attractionsSH,
-        attractionsWH: this.state.attractionsWH,
-        weatherWS: this.state.weatherWS,
-        weatherSH: this.state.weatherSH,
-        weatherWH: this.state.weatherWH,
+      .post("http://127.0.0.1:4000/ahp", {
+        criteria1AB: this.state.criteria1AB,
+        criteria1BC: this.state.criteria1BC,
+        criteria1AC: this.state.criteria1AC,
+        criteria2AB: this.state.criteria2AB,
+        criteria2BC: this.state.criteria2BC,
+        criteria2AC: this.state.criteria2AC,
+        criteria3AB: this.state.criteria3AB,
+        criteria3BC: this.state.criteria3BC,
+        criteria3AC: this.state.criteria3AC,
+        criteriaCount: this.state.selectedSurvey.criteria.length,
+        variantsCount: this.state.selectedSurvey.variants.length,
       })
       .then((response) => {
         const results = JSON.parse(response.data);
         console.log(results);
-  
-        // Przekierowanie po kliknięciu "Ok"
-        this.props.history.push("/results");
+        localStorage.setItem("results", JSON.stringify(results));
+        toast.success("Wyniki zostały pomyślnie wysłane!", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+        });
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  
+
+  handleSurveySave(surveyName) {
+    // Tutaj możesz dodać kod do zapisywania nowej ankiety w bazie danych lub innym miejscu
+    // Następnie zaktualizuj availableSurveys
+    this.setState((prevState) => ({
+      availableSurveys: [...prevState.availableSurveys, surveyName],
+    }));
+  }
+
+  combinations(n) {
+    return this.factorial(n)/(this.factorial(2)*this.factorial(n-2));
+  }
+
+  factorial(num) {
+    var result = num;
+    if (num === 0 || num === 1) 
+      return 1; 
+    while (num > 1) { 
+      num--;
+      result *= num;
+    }
+    return result;
+  }
+
+  handleSurveySelect(surveyName) {
+    const data = [["criteria1AB", "criteria1BC", "criteria1AC"],
+                  ["criteria2AB", "criteria2BC", "criteria2AC"],
+                  ["criteria3AB", "criteria3BC", "criteria3AC"],]
+    this.state.availableSurveys.forEach((element) => {
+      if (element.surveyName === surveyName) {
+        for(let i = 0; i < element.criteria.length; i++) {
+          console.log(this.combinations(element.variants.length))
+          for(let j = 0; j < this.combinations(element.variants.length); j++) {
+            this.state[data[i][j]] = '8';
+            console.log(`${data[i][j]}: ${this.state[data[i][j]]}`);
+          }
+        }
+        this.setState({
+          selectedSurvey: element,
+        });
+      }
+    });
+    console.log(this.state)
+  }
 
   render() {
     return (
       <div className="container">
-      <form className="flex flex-col p-5 space-y-10" onSubmit={this.handleSubmit}>
-        <div>
-          <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Cena
-          </span>
-          <label
-            htmlFor="priceWS"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Szwajcaria-Włochy
-          </label>
-          <input
-            id="priceWS"
-            name="priceWS"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-
-          <label
-            htmlFor="priceSH"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Hiszpania-Szwajcaria
-          </label>
-          <input
-            id="priceSH"
-            name="priceSH"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-
-          <label
-            htmlFor="priceWH"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Hiszpania-Włochy
-          </label>
-          <input
-            id="priceWH"
-            name="priceWH"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-        </div>
-
-        <div>
-          <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Atrakcje
-          </span>
-          <label
-            htmlFor="attractionsWS"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Szwajcaria-Włochy
-          </label>
-          <input
-            id="attractionsWS"
-            name="attractionsWS"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-
-          <label
-            htmlFor="attractionsSH"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Hiszpania-Szwajcaria
-          </label>
-          <input
-            id="attractionsSH"
-            name="attractionsSH"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-
-          <label
-            htmlFor="attractionsWH"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Hiszpania-Włochy
-          </label>
-          <input
-            id="attractionsWH"
-            name="attractionsWH"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-        </div>
-
-        <div>
-          <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Pogoda
-          </span>
-          <label
-            htmlFor="weatherWS"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Szwajcaria-Włochy
-          </label>
-          <input
-            id="weatherWS"
-            name="weatherWS"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-
-          <label
-            htmlFor="weatherSH"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Hiszpania-Szwajcaria
-          </label>
-          <input
-            id="weatherSH"
-            name="weatherSH"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-
-          <label
-            htmlFor="weatherWH"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Hiszpania-Włochy
-          </label>
-          <input
-            id="weatherWH"
-            name="weatherWH"
-            type="range"
-            min="0"
-            max="16"
-            defaultValue="8"
-            onChange={this.handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-        </div>
-        <button
+        <ToastContainer />
+        <SurveySelector
+          surveys={this.state.availableSurveys}
+          onSelect={this.handleSurveySelect}
+        />
+        <h1 className="flex w-full justify-center rounded-md px-3 py-1.5 text-xl leading-6 text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          {this.state.selectedSurvey.surveyName
+            ? this.state.selectedSurvey.surveyName
+            : "Wybierz ankietę"}
+        </h1>
+        <form className="flex flex-col space-y-5" onSubmit={this.handleSubmit}>
+          {this.state.selectedSurvey.criteria ? this.state.selectedSurvey.criteria.map((element) => {
+            return <FormElement key={element} sliderId={this.state.selectedSurvey.criteria.indexOf(element)+1} criteriaName={element} variantAName={this.state.selectedSurvey.variants[0]} variantBName={this.state.selectedSurvey.variants[1]} variantCName={this.state.selectedSurvey.variants[2]} handleChange={this.handleChange} />
+          }) : ""}
+          <button
             type="submit"
-            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          
+            className="flex w-full justify-center items-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
           >
-            Ok
+            Wyślij
+            <BiSolidSend className="ml-1" />
           </button>
-      </form>
+        </form>
+        <Link to="/results">
+            <button
+              type="submit"
+              className="flex w-full justify-center items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Sprawdź wyniki!
+              <FaChartSimple className="ml-1" />
+            </button>
+          </Link>
+          <Link to="/create-survey">
+            <button
+              type="submit"
+              className="flex w-full justify-center items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Dodaj nową ankietę
+              <IoMdAddCircle className="ml-1" />
+            </button>
+          </Link>
+
+        <Footer />
       </div>
     );
   }

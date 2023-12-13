@@ -1,60 +1,64 @@
-const numeric = require("numeric");
-
 function processMatrices(req, res) {
-  console.log(req.body);
-  const matrixPrice = createMatrix(
-    req.body.priceWS,
-    req.body.priceWH,
-    req.body.priceSH
-  );
-  const matrixAttractions = createMatrix(
-    req.body.attractionsWS,
-    req.body.attractionsSH,
-    req.body.attractionsWH
-  );
-  const matrixWeather = createMatrix(
-    req.body.weatherWS,
-    req.body.weatherSH,
-    req.body.weatherWH
-  );
-  const response = [calculateWeights(matrixPrice), calculateWeights(matrixAttractions), calculateWeights(matrixWeather)]
+  console.log(req.body)
+  const data = []
+  for (const [key, value] of Object.entries(req.body)) {
+    if (value && key !== "criteriaCount" && key !== "variantsCount") {
+      data.push(value)
+    }
+  }
+  const matrices = []
+  for(let i = 0; i < req.body.criteriaCount; i++) {
+    if (req.body.variantsCount === 3) {
+      matrices.push(create3x3Matrix(...data.slice(0+(i*req.body.variantsCount), req.body.variantsCount+(i*req.body.variantsCount))))
+    } else {
+      matrices.push(create2x2Matrix(...data.slice(0+(i*req.body.variantsCount), req.body.variantsCount+(i*req.body.variantsCount))))
+    }
+  }
+  
+  const response = matrices.map((elem) => {
+    return calculateWeights(elem)
+  })
   res.json(JSON.stringify(response))
-  // res.json(JSON.stringify(calculateWeights(matrixPrice)))
 }
 
-function createMatrix(priceWS, priceWH, priceSH) {
+function create2x2Matrix(criteria1AB) {
+  const matrix = [...Array(2)].map((e) => [1, 1]);
+
+  matrix[0][1] = convertPrice(criteria1AB);
+
+  matrix[1][0] = 1 / convertPrice(criteria1AB);
+  return consistentMatrix(matrix);
+}
+
+function create3x3Matrix(criteria1AB, criteria1AC, criteria1BC) {
   const matrix = [...Array(3)].map((e) => [1, 1, 1]);
 
-  matrix[0][1] = convertPrice(priceWS);
-  matrix[0][2] = convertPrice(priceWH);
+  matrix[0][1] = convertPrice(criteria1AB);
+  matrix[0][2] = convertPrice(criteria1AC);
 
-  matrix[1][0] = 1 / convertPrice(priceWS);
-  matrix[1][2] = convertPrice(priceSH);
+  matrix[1][0] = 1 / convertPrice(criteria1AB);
+  matrix[1][2] = convertPrice(criteria1BC);
 
-  matrix[2][0] = 1 / convertPrice(priceWH);
-  matrix[2][1] = 1 / convertPrice(priceSH);
-
-  return normalizeMatrix(matrix);
+  matrix[2][0] = 1 / convertPrice(criteria1AC);
+  matrix[2][1] = 1 / convertPrice(criteria1BC);
+  return consistentMatrix(matrix);
 }
 
-function normalizeMatrix(matrix) {
-  let average0 = (matrix[0][0] + matrix[1][0] + matrix[2][0]);
-  let average1 = (matrix[0][1] + matrix[1][1] + matrix[2][1]);
-  let average2 = (matrix[0][2] + matrix[1][2] + matrix[2][2]);
+function consistentMatrix(matrix) {
+  let average = [...Array(matrix.length)].map((e) => 0);
 
-  matrix[0][0] = matrix[0][0] / average0;
-  matrix[1][0] = matrix[1][0] / average0;
-  matrix[2][0] = matrix[2][0] / average0;
+  for(let i = 0; i < matrix.length; i++) {
+    for(let j = 0; j < matrix.length; j++) {
+      average[i] += matrix[j][i]
+    }
+  }
 
-  matrix[0][1] = matrix[0][1] / average1;
-  matrix[1][1] = matrix[1][1] / average1;
-  matrix[2][1] = matrix[2][1] / average1;
-
-  matrix[0][2] = matrix[0][2] / average2;
-  matrix[1][2] = matrix[1][2] / average2;
-  matrix[2][2] = matrix[2][2] / average2;
-
-  return matrix;
+  for(let i = 0; i < matrix.length; i++) {
+    for(let j = 0; j < matrix.length; j++) {
+      matrix[i][j] = matrix[i][j] / average[j]
+    }
+  }
+  return matrix
 }
 
 function calculateWeights(matrix) {
@@ -69,7 +73,6 @@ function calculateWeights(matrix) {
   const criteriaWeights = normalizedEigenvector.map(
     (weight) => weight / sumOfWeights
   );
-  // console.log(criteriaWeights)
 
   return criteriaWeights;
 }
