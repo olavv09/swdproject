@@ -1,0 +1,26 @@
+/* Nav.css */
+.nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px; /* Dostosuj wysokość według potrzeb */
+    margin-bottom: 50px; /* Dodany większy odstęp na dole */
+  }
+  
+  .nav-dots {
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin-right: 10px;
+  }
+  
+  .nav-dot.active {
+    background-color: #007bff; /* Kolor aktywnej kropki */
+  }
+  

@@ -55,18 +55,5 @@
             "war2",
             "war3"
         ]
-    },
-    {
-        "surveyName": "Państwa",
-        "criteria": [
-            "Ceny",
-            "Pogoda",
-            "Możliwości pracy"
-        ],
-        "variants": [
-            "Włochy",
-            "Hiszpania",
-            "Portugalia"
-        ]
     }
 ]

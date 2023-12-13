@@ -76,6 +76,17 @@ class Form extends React.Component {
       })
       .then((response) => {
         const results = JSON.parse(response.data);
+        console.log(this.state.criteria1AB);
+        console.log(this.state.criteria1BC);
+        console.log(this.state.criteria1AC);
+        console.log(this.state.criteria2AB);
+        console.log(this.state.criteria2BC);
+        console.log(this.state.criteria2AC);
+        console.log(this.state.criteria3AB);
+        console.log(this.state.criteria3BC);
+        console.log(this.state.criteria3AC);
+        console.log(this.state.selectedSurvey.criteria.length);
+        console.log(this.state.selectedSurvey.variants.length);
         console.log(results);
         localStorage.setItem("results", JSON.stringify(results));
         toast.success("Wyniki zostały pomyślnie wysłane!", {
@@ -134,24 +145,24 @@ class Form extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container space-y-5">
         <ToastContainer />
+        <h1 className="flex w-full justify-center rounded-md px-3 py-1.5 text-xl leading-6 text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          {this.state.selectedSurvey.surveyName
+            ? this.state.selectedSurvey.surveyName
+            : "Ankieta"}
+        </h1>
         <SurveySelector
           surveys={this.state.availableSurveys}
           onSelect={this.handleSurveySelect}
         />
-        <h1 className="flex w-full justify-center rounded-md px-3 py-1.5 text-xl leading-6 text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-          {this.state.selectedSurvey.surveyName
-            ? this.state.selectedSurvey.surveyName
-            : "Wybierz ankietę"}
-        </h1>
-        <form className="flex flex-col space-y-5" onSubmit={this.handleSubmit}>
+        <form className="flex flex-col space-y-5 p-2" onSubmit={this.handleSubmit}>
           {this.state.selectedSurvey.criteria ? this.state.selectedSurvey.criteria.map((element) => {
             return <FormElement key={element} sliderId={this.state.selectedSurvey.criteria.indexOf(element)+1} criteriaName={element} variantAName={this.state.selectedSurvey.variants[0]} variantBName={this.state.selectedSurvey.variants[1]} variantCName={this.state.selectedSurvey.variants[2]} handleChange={this.handleChange} />
           }) : ""}
           <button
             type="submit"
-            className="flex w-full justify-center items-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+            className="flex w-ful justify-center items-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
           >
             Wyślij
             <BiSolidSend className="ml-1" />
@@ -160,9 +171,9 @@ class Form extends React.Component {
         <Link to="/results">
             <button
               type="submit"
-              className="flex w-full justify-center items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="flex w-full justify-center items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 p-"
             >
-              Sprawdź wyniki!
+              Sprawdź wyniki
               <FaChartSimple className="ml-1" />
             </button>
           </Link>

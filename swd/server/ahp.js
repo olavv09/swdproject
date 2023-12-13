@@ -1,3 +1,4 @@
+// ahp.js
 function processMatrices(req, res) {
   console.log(req.body)
   const data = []
@@ -93,7 +94,6 @@ function powerMethod(matrix, numIterations) {
       let norm = Math.sqrt(result.reduce((sum, val) => sum + val ** 2, 0));
       vector = result.map(val => val / norm);
   }
-
   return vector;
 }
 

@@ -1,0 +1,56 @@
+/* SurveyForm.css */
+
+.survey-form {
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .form-field {
+    margin-bottom: 10px;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd; /* Dodaj obramowanie */
+    border-radius: 5px;
+  }
+  
+  .form-section {
+    margin-bottom: 20px;
+  }
+  
+  .form-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .form-button:hover {
+    background-color: #45a049;
+  }
+  
+  .form-submit {
+    margin-top: 20px;
+  }
+  
+  .saved-surveys {
+    margin-top: 20px;
+  }
+  
+  .form-link-button {
+    background-color: #3498db;
+  }
+  
+  .form-link-button:hover {
+    background-color: #2980b9;
+  }
+  
