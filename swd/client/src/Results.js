@@ -1,4 +1,3 @@
-// Results.js
 import React from "react";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
@@ -6,114 +5,133 @@ import SurveySelector from "./SurveySelector";
 import surveys from "./surveys.json";
 
 class Results extends React.Component {
-  calculateColorGradient(value, minValue, maxValue) {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedSurvey: "",
+      availableSurveys: surveys || [],
+      loadedResults: {},
+    };
+  }
+
+  calculateColor(value, minValue, maxValue) {
     const normalizedValue = (value - minValue) / (maxValue - minValue);
-    const hue = normalizedValue * 120;
-    const lightness = 50 - normalizedValue * 25; // Jasność zmienia się od 50% do 75%
-    const alpha = 0.3; // Poziom przezroczystości
+    const hue = 240 * normalizedValue; // Kierunek od czerwonego do zielonego
+    const lightness = 50 - normalizedValue * 75; // Zwiększam szybkość zmiany jasności
+    const alpha = 0.6;
     return `hsla(${hue}, 100%, ${lightness}%, ${alpha})`;
   }
 
   findMinAndMaxValues(results) {
     let allValues = [];
-
+  
     Object.keys(results).forEach((criterion) => {
       allValues = allValues.concat(results[criterion]);
     });
-
-    const minValue = Math.min(...allValues);
-    const maxValue = Math.max(...allValues);
-
+  
+    // Filtruj tylko liczby skończone
+    const filteredValues = allValues.filter(value => typeof value === 'number' && isFinite(value));
+  
+    // Sprawdź, czy są jakiekolwiek liczby skończone
+    if (filteredValues.length === 0) {
+      // Brak liczb skończonych, ustaw domyślne wartości
+      return { minValue: 0, maxValue: 1 };
+    }
+  
+    const minValue = Math.min(...filteredValues);
+    const maxValue = Math.max(...filteredValues);
+  
     return { minValue, maxValue };
   }
+  
 
-  calculateConsistencyRatio(eigenvalue, matrixSize) {
-    const randomIndexTable = [0, 0, 0.58, 0.90, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49];
-    const consistencyIndex = (eigenvalue - matrixSize) / (matrixSize - 1);
-    const randomIndex = randomIndexTable[matrixSize - 1];
-    const consistencyRatio = consistencyIndex / randomIndex;
-    return consistencyRatio;
-  }
-
-  handleSurveySelect = (selectedSurvey) => {
-    const selectedSurveyData = surveys.find((survey) => survey.surveyName === selectedSurvey);
-    console.log("Selected Survey Data:", selectedSurveyData);
-
-    // Przykładowe dane - do zastąpienia prawdziwymi danymi z ankiety
-    const eigenvalue = 6; // Wartość własna
-    const matrixSize = selectedSurveyData.criteria.length;
-
-    // Oblicz współczynnik konsekwentności
-    const consistencyRatio = this.calculateConsistencyRatio(eigenvalue, matrixSize);
-
-    // Wnioski w zależności od współczynnika konsekwentności
-    let consistencyConclusion;
-    if (consistencyRatio <= 0.1) {
-      consistencyConclusion = "Wyniki są akceptowalnie spójne.";
-    } else {
-      consistencyConclusion = "Wyniki nie są wystarczająco spójne. Spróbuj dostosować priorytety.";
-    }
-
-    console.log("Consistency Ratio:", consistencyRatio);
-    console.log("Consistency Conclusion:", consistencyConclusion);
-  };
 
   renderTableHeaders(results) {
-    const headers = Object.keys(results);
-    const survey = surveys.find((survey) => survey.surveyName === results.surveyName);
+    const variants = results.variants;
 
-    return headers.map((header, index) => (
-      <th key={index} className="border px-4 py-2">
-        {survey ? survey.variants[index] : header}
-      </th>
-    ));
+    return (
+      <tr>
+        {variants.map((variant, index) => (
+          <th key={index} className="border px-4 py-2">
+            {variant}
+          </th>
+        ))}
+      </tr>
+    );
   }
 
   renderTableRows(results) {
-    const criteria = Object.keys(results);
-    const survey = surveys.find((survey) => survey.surveyName === results.surveyName);
+    const criteria = results.criteria;
     const { minValue, maxValue } = this.findMinAndMaxValues(results);
-
+  
     return criteria.map((criterion, index) => {
-      const cells = results[criterion];
-
+      console.log('criterion:', criterion);
+      console.log('results.results[index]:', results.results[index]);
+  
       return (
         <tr key={index}>
-          <td className="border px-4 py-2">
-            {survey ? survey.criteria[index] : `Kryterium ${index + 1}`}
-          </td>
-          {cells.map((cell, cellIndex) => (
-            <td
-              key={cellIndex}
-              className="border px-4 py-2"
-              style={{
-                backgroundColor: this.calculateColorGradient(
-                  cell,
-                  minValue,
-                  maxValue
-                ),
-                color: "black",
-              }}
-            >
-              {cell}
-            </td>
-          ))}
+          <td className="border px-4 py-2">{criterion}</td>
+          {results.results[index].map((cell, cellIndex) => {
+            console.log('cell:', cell);
+            console.log('minValue:', minValue);
+            console.log('maxValue:', maxValue);
+  
+            return (
+              <td
+                key={cellIndex}
+                className="border px-4 py-2"
+                style={{
+                  backgroundColor: this.calculateColor(cell, minValue, maxValue),
+                  color: "black",
+                }}
+              >
+                {cell}
+              </td>
+            );
+          })}
         </tr>
       );
     });
   }
+  
+
+  handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const loadedResults = JSON.parse(e.target.result);
+          this.setState({ loadedResults });
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
 
   render() {
-    const results = JSON.parse(localStorage.getItem("results")) || {};
+    const { loadedResults, selectedSurvey } = this.state;
+    const results = loadedResults || {};
 
     return (
       <div className="container space-y-6">
-        <SurveySelector onSelect={this.handleSurveySelect} />
+        <SurveySelector onSelect={(selectedSurvey) => this.setState({ selectedSurvey })} />
         <h1 className="flex w-full justify-center rounded-md px-3 py-1.5 text-xl leading-6 text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
           Wyniki ankiety
         </h1>
 
-        {Object.keys(results).length > 0 ? (
+        <div>
+          <input
+            type="file"
+            accept=".json"
+            onChange={this.handleFileChange}
+            className="border rounded-md px-4 py-2"
+          />
+        </div>
+
+        {selectedSurvey && (
           <div>
             <table className="border-collapse w-full mt-4">
               <thead>
@@ -124,19 +142,9 @@ class Results extends React.Component {
               </thead>
               <tbody>{this.renderTableRows(results)}</tbody>
             </table>
-            {/* Dodane wyświetlanie wniosków o spójności */}
-            <div className="mt-4">
-              <strong>Wnioski dotyczące spójności:</strong>
-              <p>
-                {this.calculateConsistencyRatio <= 0.1
-                  ? "Wyniki są akceptowalnie spójne."
-                  : "Wyniki nie są wystarczająco spójne. Spróbuj dostosować priorytety."}
-              </p>
-            </div>
           </div>
-        ) : (
-          <p>Brak wyników do wyświetlenia.</p>
         )}
+
         <div>
           <Link to="/">
             <button
