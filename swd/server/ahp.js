@@ -14,7 +14,7 @@ function processMatrices(req, res) {
       matrices.push(create2x2Matrix(...data.slice(0+(i*req.body.variantsCount), req.body.variantsCount+(i*req.body.variantsCount))))
     }
   }
-  
+
   const response = matrices.map((elem) => {
     return calculateWeights(elem)
   })
