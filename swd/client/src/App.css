@@ -49,6 +49,31 @@ h1 {
   color: #333; /* Kolor tekstu */
 }
 
+/* App.css lub odpowiedni plik CSS */
+.nav-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
 
+.nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-right: 10px;
+}
 
-/* ... (your existing styles) */
+.nav-dot.active {
+  background-color: #007bff; /* Kolor aktywnej kropki */
+}
+
+.nav-space {
+  width: 20px; /* Odstęp między kropkami */
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Domyślny odstęp między przyciskami */
+}

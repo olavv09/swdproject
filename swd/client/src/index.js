@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Form from './Form'; // Import komponentu Form
+import Nav from "./Nav"; // Importuj komponent Nav
 import './index.css';
 import Home from './Home';
 import Results from './Results';
@@ -15,6 +16,7 @@ const navigate = () => { }; // Utwórz funkcję navigate
 root.render(
   <React.StrictMode>
     <Router>
+    <Nav />
       <Routes>
         <Route
           path="/"

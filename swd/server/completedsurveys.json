@@ -1,0 +1,80 @@
+[
+  {
+    "criteria1AB": "8",
+    "criteria1BC": "8",
+    "criteria1AC": "8",
+    "criteria2AB": "8",
+    "criteria2BC": "8",
+    "criteria2AC": "8",
+    "criteria3AB": "8",
+    "criteria3BC": "8",
+    "criteria3AC": "8",
+    "criteriaCount": 3,
+    "variantsCount": 3
+  },
+  {
+    "criteria1AB": "8",
+    "criteria1BC": "8",
+    "criteria1AC": "8",
+    "criteria2AB": "8",
+    "criteria2BC": "8",
+    "criteria2AC": "8",
+    "criteria3AB": "8",
+    "criteria3BC": "8",
+    "criteria3AC": "8",
+    "criteriaCount": 3,
+    "variantsCount": 3
+  },
+  {
+    "criteria1AB": "8",
+    "criteria1BC": "8",
+    "criteria1AC": "8",
+    "criteria2AB": "8",
+    "criteria2BC": "8",
+    "criteria2AC": "8",
+    "criteria3AB": "8",
+    "criteria3BC": "8",
+    "criteria3AC": "8",
+    "criteriaCount": 3,
+    "variantsCount": 3
+  },
+  {
+    "criteria1AB": "8",
+    "criteria1BC": "8",
+    "criteria1AC": "8",
+    "criteria2AB": "8",
+    "criteria2BC": "8",
+    "criteria2AC": "8",
+    "criteria3AB": "8",
+    "criteria3BC": "8",
+    "criteria3AC": "8",
+    "criteriaCount": 3,
+    "variantsCount": 3
+  },
+  {
+    "criteria1AB": "14",
+    "criteria1BC": "8",
+    "criteria1AC": "6",
+    "criteria2AB": "8",
+    "criteria2BC": "3",
+    "criteria2AC": "9",
+    "criteria3AB": "11",
+    "criteria3BC": "9",
+    "criteria3AC": "8",
+    "criteriaCount": 3,
+    "variantsCount": 3
+  },
+  {
+    "criteria1AB": "12",
+    "criteria1BC": "8",
+    "criteria1AC": "11",
+    "criteria2AB": "6",
+    "criteria2BC": "12",
+    "criteria2AC": "8",
+    "criteria3AB": "8",
+    "criteria3BC": "12",
+    "criteria3AC": "6",
+    "criteriaCount": 3,
+    "variantsCount": 3
+  }
+]

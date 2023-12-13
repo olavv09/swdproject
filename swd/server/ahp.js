@@ -1,3 +1,4 @@
+// ahp.js
 function processMatrices(req, res) {
   console.log(req.body)
   const data = []
@@ -66,6 +67,14 @@ function calculateWeights(matrix) {
 
   const normalizedEigenvector = normalizeVector(maxEigenvector);
 
+  const eigenvalue = powerIteration(matrix);
+  
+  const CI = calculateConsistencyIndex(eigenvalue, normalizedEigenvector, 3)
+  const RI = calculateRandomIndex(matrix.length)
+
+  const CR = CI / RI;
+
+
   const sumOfWeights = normalizedEigenvector.reduce(
     (sum, weight) => sum + weight,
     0
@@ -73,8 +82,66 @@ function calculateWeights(matrix) {
   const criteriaWeights = normalizedEigenvector.map(
     (weight) => weight / sumOfWeights
   );
+  console.log(criteriaWeights)
+  return {
+    criteriaWeights: criteriaWeights,
+    cr: Math.abs(CR/10),
+  }
+}
 
-  return criteriaWeights;
+function calculateRandomIndex(matrixSize) {
+  const randomIndexValues = {
+    1: 0.00,
+    2: 0.00,
+    3: 0.58,
+    4: 0.90,
+    5: 1.12,
+    6: 1.24,
+    7: 1.32,
+    8: 1.41,
+    9: 1.45,
+    10: 1.49,
+  };
+
+  return randomIndexValues[matrixSize] || null;
+}
+
+function calculateConsistencyIndex(eigenvalue, eigenvector, criteriaCount) {
+  // Oblicz sumę elementów wektora własnego
+  const sumEigenvector = eigenvector.reduce((sum, value) => sum + value, 0);
+
+  // Oblicz iloraz sumy elementów wektora własnego i wartości własnej
+  const consistencyIndex = (eigenvalue - criteriaCount) / ((criteriaCount - 1) * sumEigenvector);
+
+  return consistencyIndex;
+}
+
+function powerIteration(matrix, tolerance = 1e-10, maxIterations = 1000) {
+  const n = matrix.length;
+  let eigenvalue = 0;
+  let eigenvector = Array(n).fill(1);
+
+  for (let iteration = 0; iteration < maxIterations; iteration++) {
+    const prevEigenvalue = eigenvalue;
+    const prevEigenvector = [...eigenvector];
+
+    // Oblicz nowy wektor
+    eigenvector = matrixVectorMultiply(matrix, eigenvector);
+
+    // Oblicz nową wartość własną
+    eigenvalue = eigenvector.reduce((sum, val, i) => sum + val / prevEigenvector[i], 0) / n;
+
+    // Normalizacja wektora
+    const norm = Math.sqrt(eigenvector.reduce((sum, val) => sum + val ** 2, 0));
+    eigenvector = eigenvector.map(val => val / norm);
+
+    // Sprawdź warunek zbieżności
+    if (Math.abs(eigenvalue - prevEigenvalue) < tolerance) {
+      break;
+    }
+  }
+
+  return eigenvalue;
 }
 
 function powerMethod(matrix, numIterations) {
@@ -93,7 +160,6 @@ function powerMethod(matrix, numIterations) {
       let norm = Math.sqrt(result.reduce((sum, val) => sum + val ** 2, 0));
       vector = result.map(val => val / norm);
   }
-
   return vector;
 }
 

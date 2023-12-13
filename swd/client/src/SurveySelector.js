@@ -1,3 +1,4 @@
+// SurveySelector.js
 import React, { useState, useEffect } from "react";
 
 const SurveySelector = ({ onSelect }) => {
@@ -31,7 +32,7 @@ const SurveySelector = ({ onSelect }) => {
 
   return (
     <div>
-      <label>Wybierz Ankietę:</label>
+      <label></label>
       <select value={selectedSurvey} onChange={handleChange}>
         <option value="" disabled>
           Wybierz ankietę
